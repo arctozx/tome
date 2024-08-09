@@ -18,7 +18,7 @@ const Home = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:8000/books")
+      .get("https://tome-dgt3.onrender.com/books")
       .then((response) => {
         setBooks(response.data.data);
         setLoading(false);
@@ -41,7 +41,7 @@ const Home = () => {
 
   const handleDeleteBook = (book) => {
     axios
-      .delete(`http://localhost:8000/books/${book._id}`)
+      .delete(`https://tome-dgt3.onrender.com/books/${book._id}`)
       .then(() => {
         setBooks(books.filter((b) => b._id !== book._id));
       })

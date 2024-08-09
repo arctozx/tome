@@ -19,7 +19,7 @@ const UpdateBook = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:8000/books/${id}`)
+      .get(`https://tome-dgt3.onrender.com/books/${id}`)
       .then((response) => {
         setTitle(response.data.title);
         setAuthor(response.data.author);
@@ -47,7 +47,7 @@ const UpdateBook = () => {
     setLoading(true);
 
     axios
-      .put(`http://localhost:8000/books/${id}`, data)
+      .put(`https://tome-dgt3.onrender.com/books/${id}`, data)
       .then(() => {
         setLoading(false);
         navigate("/");

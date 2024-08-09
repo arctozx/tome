@@ -13,18 +13,6 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 
-app.get("/home", (req, res) => {
-  console.log("This is home page");
-
-  res.end();
-});
-
-app.get("/", (req, res) => {
-  console.log("This is the landing page");
-  res.send("Welcome to my heart");
-  res.end();
-});
-
 app.use("/books", booksRoute)
 
 mongoose
