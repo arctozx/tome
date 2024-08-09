@@ -55,13 +55,14 @@ const Home = () => {
     setSearched(search);
   }
 
-  const filteredBooks = books.filter((book) => {
-    const title = book.title.toLowerCase();
-    const author = book.author.toLowerCase();
-    const searchTerms = searched.toLowerCase().split(" ");
-  
-    return searchTerms.every(term => title.includes(term) || author.includes(term));
-  });
+  const filteredBooks = books && books.length 
+  ? books.filter((book) => {
+      const title = book.title.toLowerCase();
+      const author = book.author.toLowerCase();
+      const searchTerms = searched.toLowerCase().split(" ");
+      return searchTerms.every((term) => title.includes(term) || author.includes(term));
+    })
+  : [];
 
   return (
     <div className="my-4 sm:my-6 md:my-8 lg:my-10">
