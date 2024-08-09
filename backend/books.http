@@ -1,0 +1,4 @@
+GET http://localhost:8000/books
+```
+###
+GET http://localhost:8000/books/66b36502349b9eca256a3cdf
