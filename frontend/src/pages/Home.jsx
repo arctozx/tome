@@ -17,16 +17,18 @@ const Home = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("https://tome-dgt3.onrender.com/books")
-      .then((response) => {
-        setBooks(response.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error.message);
-        setLoading(false);
-      });
+    async () => {
+      await axios
+        .get("https://tome-dgt3.onrender.com/books")
+        .then((response) => {
+          setBooks(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          setLoading(false);
+        });
+    };
   }, []);
 
   const openModal = (book) => {
