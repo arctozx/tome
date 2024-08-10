@@ -20,7 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("api/books", booksRoute);
+app.use("/api/books", booksRoute);
 
 app.use(express.static(path.join(__dirname, "..", "/frontend/dist")));
 
@@ -33,7 +33,7 @@ mongoose
   .then(() => {
     console.log("Connected to Database");
     app.listen(PORT, () => {
-      console.log(`Server is running at ${PORT}`);
+      console.log(`Server is running at test ${PORT}`);
     });
   })
   .catch((error) => {

@@ -13,9 +13,9 @@ const Navbar = ({ onSearch }) => {
   return (
     <header className="flex justify-between items-center px-6 md:px-[10%] fixed top-0 left-0 w-full bg-gray-800 z-10 py-3">
       <a href="#" className="text-xl md:text-2xl text-white">
-        Tome
+        Tomes
       </a>
-      <div className="flex">
+      <div className="flex"> 
         <input
           value={searchInput}
           onChange={(event) => {

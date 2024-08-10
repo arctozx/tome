@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
@@ -17,17 +18,20 @@ const Home = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("https://tome-dgt3.onrender.com/books")
-      .then((response) => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get("/api/books");
         setBooks(response.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error.message);
+      } finally {
         setLoading(false);
-      });
-  }, []);
+      }
+    };
+    fetchBooks();
+}, []);
+  
+  
 
   const openModal = (book) => {
     setSelectedBook(book);
@@ -39,28 +43,34 @@ const Home = () => {
     setShowDeleteModal(true);
   };
 
-  const handleDeleteBook = (book) => {
-    axios
-      .delete(`https://tome-dgt3.onrender.com/books/${book._id}`)
-      .then(() => {
-        setBooks(books.filter((b) => b._id !== book._id));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleDeleteBook = async (book) => {
+    try {
+      await axios.delete(`/api/books/${book._id}`);
+      setBooks(books.filter((b) => b._id !== book._id));
+      setShowDeleteModal(false);
+      setError(null);
+    } catch (error) {
+      console.error("Error deleting book:", error);
+      setError("Failed to delete the book. Please try again.");
+    }
   };
 
   function handleSearch(search) {
     setSearched(search);
   }
 
-  const filteredBooks = books.filter((book) => {
-    const title = book.title.toLowerCase();
-    const author = book.author.toLowerCase();
-    const searchTerms = searched.toLowerCase().split(" ");
-  
-    return searchTerms.every(term => title.includes(term) || author.includes(term));
-  });
+
+  const filteredBooks = Array.isArray(books)
+  ? books.filter((book) => {
+      const title = book.title.toLowerCase();
+      const author = book.author.toLowerCase();
+      const searchTerms = searched.toLowerCase().split(" ");
+      return searchTerms.every(
+        (term) => title.includes(term) || author.includes(term)
+      );
+    })
+  : [];
+
 
   return (
     <div className="my-4 sm:my-6 md:my-8 lg:my-10">
@@ -69,6 +79,8 @@ const Home = () => {
         <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           {loading ? (
             <Spinner />
+          ) : error ? (
+            <div className="text-red-500 text-center">{error}</div>
           ) : (
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredBooks.map((book) => (
@@ -84,12 +96,20 @@ const Home = () => {
                       src={book.imageUrl}
                       alt={book.title}
                       className="w-full h-full object-cover rounded-t-lg"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "path/to/fallback/image.jpg";
+                      }}
                     />
                   </div>
 
                   <div className="flex flex-col items-center mt-2 sm:mt-3">
-                    <h1 className="truncate text-sm sm:text-base">{book.title}</h1>
-                    <p className="font-bold truncate text-xs sm:text-sm">{book.author}</p>
+                    <h1 className="truncate text-sm sm:text-base">
+                      {book.title}
+                    </h1>
+                    <p className="font-bold truncate text-xs sm:text-sm">
+                      {book.author}
+                    </p>
 
                     <div className="flex justify-evenly mt-2 w-full">
                       <Link to={`/books/update/${book._id}`}>
