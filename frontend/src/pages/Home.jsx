@@ -12,13 +12,13 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null); 
   const [searched, setSearched] = useState("");
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:8000/books")
+      .get("http://localhost:8000/api/books")
       .then((response) => {
         setBooks(response.data.data);
         setLoading(false);
@@ -41,7 +41,7 @@ const Home = () => {
 
   const handleDeleteBook = (book) => {
     axios
-      .delete(`http://localhost:8000/books/${book._id}`)
+      .delete(`http://localhost:8000/api/books/${book._id}`)
       .then(() => {
         setBooks(books.filter((b) => b._id !== book._id));
       })

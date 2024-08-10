@@ -15,11 +15,11 @@ const UpdateBook = () => {
   const [loading, setLoading] = useState(false);
   const [overview, setOverview] = useState("");
   const { id } = useParams();
-
+ 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:8000/books/${id}`)
+      .get(`http://localhost:8000/api/books/${id}`)
       .then((response) => {
         setTitle(response.data.title);
         setAuthor(response.data.author);
@@ -47,7 +47,7 @@ const UpdateBook = () => {
     setLoading(true);
 
     axios
-      .put(`http://localhost:8000/books/${id}`, data)
+      .put(`http://localhost:8000/api/books/${id}`, data)
       .then(() => {
         setLoading(false);
         navigate("/");

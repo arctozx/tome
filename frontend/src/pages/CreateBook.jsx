@@ -24,9 +24,9 @@ const CreateBook = () => {
       overview,
     };
     setLoading(true);
-
+ 
     axios
-      .post("http://localhost:8000/books", data)
+      .post("http://localhost:8000/api/books", data)
       .then(() => {
         setLoading(false);
         navigate("/");
