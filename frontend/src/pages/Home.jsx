@@ -20,7 +20,10 @@ const Home = () => {
     setLoading(true);
     const fetchBooks = async () => {
       try {
-        const response = await axios.get("/api/books");
+
+
+        const response = await axios.get("https://tome-dgt3.onrender.com/books");
+
         setBooks(response.data.data);
       } catch (error) {
         console.log(error.message);
@@ -30,8 +33,6 @@ const Home = () => {
     };
     fetchBooks();
 }, []);
-  
-  
 
   const openModal = (book) => {
     setSelectedBook(book);
@@ -60,16 +61,18 @@ const Home = () => {
   }
 
 
-  const filteredBooks = Array.isArray(books)
+  const filteredBooks = books && books.length 
   ? books.filter((book) => {
       const title = book.title.toLowerCase();
       const author = book.author.toLowerCase();
       const searchTerms = searched.toLowerCase().split(" ");
+
       return searchTerms.every(
         (term) => title.includes(term) || author.includes(term)
       );
     })
   : [];
+
 
 
   return (
