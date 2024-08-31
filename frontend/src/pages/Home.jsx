@@ -13,17 +13,14 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null); 
   const [searched, setSearched] = useState("");
 
   useEffect(() => {
     setLoading(true);
-    const fetchBooks = async () => {
-      try {
-
-
-        const response = await axios.get("https://tome-dgt3.onrender.com/books");
-
+    axios
+      .get("http://localhost:8000/books")
+      .then((response) => {
         setBooks(response.data.data);
       } catch (error) {
         console.log(error.message);
@@ -44,16 +41,15 @@ const Home = () => {
     setShowDeleteModal(true);
   };
 
-  const handleDeleteBook = async (book) => {
-    try {
-      await axios.delete(`/api/books/${book._id}`);
-      setBooks(books.filter((b) => b._id !== book._id));
-      setShowDeleteModal(false);
-      setError(null);
-    } catch (error) {
-      console.error("Error deleting book:", error);
-      setError("Failed to delete the book. Please try again.");
-    }
+  const handleDeleteBook = (book) => {
+    axios
+      .delete(`http://localhost:8000/books/${book._id}`)
+      .then(() => {
+        setBooks(books.filter((b) => b._id !== book._id));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   function handleSearch(search) {

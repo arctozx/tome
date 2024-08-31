@@ -20,13 +20,18 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/books", booksRoute);
+app.get("/api/home", (req, res) => {
+  console.log("This is home page");
 
 app.use(express.static(path.join(__dirname, "..", "/frontend/dist")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+app.get("/api", (req, res) => {
+  console.log("This is the landing page");
+  res.send("Welcome to my heart");
+  res.end();
 });
+
+app.use("/api/books", booksRoute)
 
 mongoose
   .connect(mongoDBURL)
