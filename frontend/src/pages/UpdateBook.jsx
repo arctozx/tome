@@ -19,11 +19,7 @@ const UpdateBook = () => {
   useEffect(() => {
     setLoading(true);
     axios
-<<<<<<< HEAD
       .get(`/api/books/${id}`)
-=======
-      .get(`http://localhost:8000/api/books/${id}`)
->>>>>>> 0726d431b1562e8baec74f06a63f55a1627bfb13
       .then((response) => {
         setTitle(response.data.title);
         setAuthor(response.data.author);
@@ -51,11 +47,7 @@ const UpdateBook = () => {
     setLoading(true);
 
     axios
-<<<<<<< HEAD
       .put(`/api/books/${id}`, data)
-=======
-      .put(`http://localhost:8000/api/books/${id}`, data)
->>>>>>> 0726d431b1562e8baec74f06a63f55a1627bfb13
       .then(() => {
         setLoading(false);
         navigate("/");

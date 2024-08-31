@@ -17,19 +17,20 @@ const Home = () => {
   const [searched, setSearched] = useState("");
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get("http://localhost:8000/books")
-      .then((response) => {
+    const fetchBooks = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("api/books");
         setBooks(response.data.data);
       } catch (error) {
         console.log(error.message);
+        setError("An error occurred while fetching books.");
       } finally {
         setLoading(false);
       }
     };
     fetchBooks();
-}, []);
+  }, []);
 
   const openModal = (book) => {
     setSelectedBook(book);
@@ -43,12 +44,13 @@ const Home = () => {
 
   const handleDeleteBook = (book) => {
     axios
-      .delete(`http://localhost:8000/books/${book._id}`)
+      .delete(`api/books/${book._id}`)
       .then(() => {
         setBooks(books.filter((b) => b._id !== book._id));
       })
       .catch((error) => {
         console.log(error);
+        setError("An error occurred while deleting the book.");
       });
   };
 
@@ -56,20 +58,17 @@ const Home = () => {
     setSearched(search);
   }
 
-
   const filteredBooks = books && books.length 
-  ? books.filter((book) => {
-      const title = book.title.toLowerCase();
-      const author = book.author.toLowerCase();
-      const searchTerms = searched.toLowerCase().split(" ");
+    ? books.filter((book) => {
+        const title = book.title.toLowerCase();
+        const author = book.author.toLowerCase();
+        const searchTerms = searched.toLowerCase().split(" ");
 
-      return searchTerms.every(
-        (term) => title.includes(term) || author.includes(term)
-      );
-    })
-  : [];
-
-
+        return searchTerms.every(
+          (term) => title.includes(term) || author.includes(term)
+        );
+      })
+    : [];
 
   return (
     <div className="my-4 sm:my-6 md:my-8 lg:my-10">
